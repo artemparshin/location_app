@@ -18,7 +18,7 @@ class MyDatabaseService {
     });
   }
     
-  Future<List<EventModel>> getLocationCollectionData1() async {
+  Future<List<EventModel>> getLocationCollectionData() async {
     return await bookingLocations.get().then((QuerySnapshot res) { 
     return res.docs
     .map((e) => EventModel(From: e['From'], To: e['To'], Price: e['Price'], Date: e['Date'].toDate()))

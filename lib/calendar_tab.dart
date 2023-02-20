@@ -3,6 +3,7 @@ import 'package:location_app/main.dart';
 import 'package:location_app/model/event.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'add_tab.dart';
+import 'Data.dart';
 
 class CalendarTab extends StatefulWidget {
   const CalendarTab({super.key});
@@ -12,13 +13,20 @@ class CalendarTab extends StatefulWidget {
 
 class CalendarState extends State<CalendarTab> {
   
-  List<EventModel> eventList = MyAppState.eventListMain.value; 
+  @override
+  void initState() {
+    MyDatabaseService().getLocationCollectionData().then((value) {eventList = ValueNotifier(value);});
+    super.initState();
+  }
+  
+  static ValueNotifier<List<EventModel>> eventList = ValueNotifier(List.empty());
+  List<EventModel> eventListValue = eventList.value; 
   int currentTabIndex = 0;
   ValueNotifier<bool> notifier = ValueNotifier(false);
   ValueNotifier<DateTime> mySelectedDay = ValueNotifier(DateTime.now());
 
-EventModel? getIndex(DateTime day) {
-    for (var event in eventList) {
+  EventModel? getIndex(DateTime day) {
+    for (var event in eventListValue) {
       if ((event.Date.day == day.day) &&
           (event.Date.month == day.month) &&
           (event.Date.year == day.year)) {
@@ -28,9 +36,7 @@ EventModel? getIndex(DateTime day) {
   }
   
   List<String> getEventsForDay(DateTime day) {
-    if (eventList.any((element) => element.Date.day == day.day) &&
-        eventList.any((element) => element.Date.month == day.month) &&
-        eventList.any((element) => element.Date.year == day.year)) {
+    if (eventListValue.any((element) => element.Date.day == day.day && element.Date.month == day.month && element.Date.year == day.year)) {
       return [""];
     }
     return [];
@@ -64,7 +70,7 @@ EventModel? getIndex(DateTime day) {
         ValueListenableBuilder(
           valueListenable: mySelectedDay,
           builder: (BuildContext context, dynamic value, Widget? child) {
-            return (eventList.isNotEmpty && getIndex(value) != null) ? Expanded(child: Column(
+            return (eventListValue.isNotEmpty && getIndex(value) != null) ? Expanded(child: Column(
               children: [
                 Row(
                   children: [const Text("From "), Text(getIndex(value)!.From)],

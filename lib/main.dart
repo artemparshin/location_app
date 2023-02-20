@@ -21,14 +21,6 @@ class MyApp extends StatefulWidget {
 
 class MyAppState extends State<MyApp> {
 
-  static ValueNotifier<List<EventModel>> eventListMain = ValueNotifier(List.empty());
-
-  @override
-    void initState() {
-      MyDatabaseService().getLocationCollectionData1().then((value) {eventListMain = ValueNotifier(value);});
-      super.initState();
-    }
-
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
