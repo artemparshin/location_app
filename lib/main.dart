@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'calendar_tab.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'model/event.dart';
-import 'Data.dart';
-
 
 Future<void> main() async {
 
@@ -17,7 +14,6 @@ class MyApp extends StatefulWidget {
   @override
   State<MyApp> createState() => MyAppState();
 }
-
 
 class MyAppState extends State<MyApp> {
 

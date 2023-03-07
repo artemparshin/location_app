@@ -1,5 +1,5 @@
 import "package:cloud_firestore/cloud_firestore.dart";
-import 'package:location_app/model/event.dart';
+import 'package:location_app/model/event_model.dart';
 
 class MyDatabaseService {
   final String? locationFile;

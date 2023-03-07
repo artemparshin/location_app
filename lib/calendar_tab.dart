@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:location_app/main.dart';
-import 'package:location_app/model/event.dart';
+import 'package:location_app/model/event_model.dart';
+import 'package:location_app/service/database_service.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'add_tab.dart';
-import 'Data.dart';
 
 class CalendarTab extends StatefulWidget {
   const CalendarTab({super.key});
