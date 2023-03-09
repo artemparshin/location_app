@@ -38,6 +38,7 @@ class CalendarState extends State<CalendarTab> {
   List<String> getEventsForDay(DateTime day) {
     if (eventListValue.any((element) => element.Date.day == day.day && element.Date.month == day.month && element.Date.year == day.year)) {
       return [""];
+      // what this function does ????? it is not get Event FOr days it is checking if there are event in the day. why do you need this??
     }
     return [];
   }
@@ -99,6 +100,7 @@ class CalendarState extends State<CalendarTab> {
         onTap: (Value) {
           setState(() {
             currentTabIndex = Value;
+            // explain me about this
             Value == 1
                 ? Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
