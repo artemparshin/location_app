@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:location_app/views/welcome_screen.dart';
 
 class RegView extends StatelessWidget {
   const RegView({super.key});
@@ -44,7 +45,9 @@ Widget _passwordField(){
 
 Widget _loginButton(){
   return ElevatedButton(
-    onPressed: (){},
+    onPressed: (){
+      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {return const WelcomeScreen();}));
+    },
     child: const Text("Register new user")
   );
 }

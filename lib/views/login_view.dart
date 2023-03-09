@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:location_app/views/calendar_tab.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
@@ -44,7 +45,9 @@ Widget _passwordField(){
 
 Widget _loginButton(){
   return ElevatedButton(
-    onPressed: (){},
+    onPressed: (){
+      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {return const CalendarTab();}));
+    },
     child: const Text("Login")
   );
 }
