@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'views/calendar_tab.dart';
+import 'package:location_app/views/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {
@@ -21,7 +21,7 @@ class MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: CalendarTab()
+      home: WelcomeScreen()
     );
   }
 }
