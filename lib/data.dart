@@ -7,7 +7,7 @@ class MyDatabaseService {
 
   final CollectionReference bookingLocations =
       FirebaseFirestore.instance.collection("LocationCollection");
-
+//  why you are not specifying the return type?
   Future updateLocationData(
       EventModel event ) async {
     return await bookingLocations.doc().set({
