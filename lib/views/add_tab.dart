@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:location_app/service/database_service.dart';
 import 'package:location_app/model/event_model.dart';

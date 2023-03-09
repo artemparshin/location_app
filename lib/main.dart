@@ -5,6 +5,7 @@ import 'Auth/auth_repository.dart';
 import 'Auth/bloc/auth_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -28,4 +29,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
