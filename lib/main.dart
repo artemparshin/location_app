@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:location_app/Login/bloc/login_bloc.dart';
+import 'package:location_app/service/login_reg_service.dart';
 import 'package:location_app/views/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'Auth/auth_repository.dart';
-import 'Auth/bloc/auth_bloc.dart';
+import 'Registration/bloc/reg_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,15 +17,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => AuthRepository(),
-      child: BlocProvider(
-        create: (context) => AuthBloc(authRepository: RepositoryProvider.of<AuthRepository>(context)),
-        child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            home: WelcomeScreen()
-        ),
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => RegBloc(RegService())),
+        BlocProvider(create: (context) => LoginBloc(LoginService())),
+      ],
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: WelcomeScreen())
     );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return RepositoryProvider(
+  //     create: (context) => RegUser(),
+  //     child: BlocProvider(
+  //       create: (context) => RegBloc(regUser: RepositoryProvider.of<RegUser>(context)),
+  //       child: MaterialApp(
+  //           debugShowCheckedModeBanner: false,
+  //           home: WelcomeScreen()
+  //       ),
+  //     ),
+  //   );
+  // }
 }

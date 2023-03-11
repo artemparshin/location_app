@@ -49,8 +49,9 @@ class CalendarState extends State<CalendarTab> {
       body: Column(children: [
         TableCalendar(
             onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
-              mySelectedDay.value = selectedDay;
-              setState(() {});
+              setState(() {
+                mySelectedDay.value = selectedDay;
+              });
             },
             selectedDayPredicate: (day) {
               // bool predicate = false;
