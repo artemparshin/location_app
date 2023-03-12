@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:location_app/Login/bloc/login_bloc.dart';
+import 'package:location_app/login/bloc/login_bloc.dart';
 import 'package:location_app/service/login_reg_service.dart';
 import 'package:location_app/views/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'Registration/bloc/reg_bloc.dart';
+import 'registration/bloc/reg_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<void> main() async {

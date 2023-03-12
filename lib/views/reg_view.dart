@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:location_app/Registration/bloc/reg_bloc.dart';
-import 'package:location_app/Registration/bloc/reg_event.dart';
+import 'package:location_app/registration/bloc/reg_bloc.dart';
+import 'package:location_app/registration/bloc/reg_event.dart';
 import 'package:location_app/views/welcome_screen.dart';
-import '../Registration/bloc/reg_state.dart';
+import '../registration/bloc/reg_state.dart';
 
 class RegView extends StatefulWidget {
   const RegView({super.key});
@@ -30,7 +30,8 @@ class _RegViewState extends State<RegView> {
               builder: (context, state) {
                 return (state is RegFailure
                   ? const Text('Something went wrong')
-                  : const SizedBox.shrink());
+                  : const SizedBox.shrink()
+                );
               },
             ),
           ]
@@ -58,11 +59,11 @@ class _RegViewState extends State<RegView> {
     return BlocConsumer<RegBloc, RegState>(
       listener: (context, state) {
         state is RegSuccess
-          ? Navigator.of(context)
-              .push(MaterialPageRoute(builder: (BuildContext context) {
-                return const WelcomeScreen();
-              }))
-          : null;
+        ? Navigator.of(context)
+          .push(MaterialPageRoute(builder: (BuildContext context) {
+            return const WelcomeScreen();
+          }))
+        : null;
       },
       builder: (context, state) {
         return ElevatedButton(

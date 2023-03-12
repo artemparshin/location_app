@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:location_app/Login/bloc/login_event.dart';
+import 'package:location_app/login/bloc/login_event.dart';
 import 'package:location_app/views/calendar_tab.dart';
-import '../Login/bloc/login_bloc.dart';
-import '../Login/bloc/login_state.dart';
-import '../service/login_reg_service.dart';
+import '../login/bloc/login_bloc.dart';
+import '../login/bloc/login_state.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -29,8 +28,7 @@ class _LoginViewState extends State<LoginView> {
             _loginButton(context),
             BlocBuilder<LoginBloc, LoginState>(
               builder: (context, state) {
-                return (
-                  state is LoginFailure
+                return (state is LoginFailure
                   ? const Text('Something went wrong')
                   : const SizedBox.shrink()
                 );
@@ -65,15 +63,14 @@ class _LoginViewState extends State<LoginView> {
           .push(MaterialPageRoute(builder: (BuildContext context) {
             return const CalendarTab();
           }))
-         : null;
+        : null;
       },
       builder: (context, state) {
         return ElevatedButton(
-          onPressed: () {
+          onPressed: 
             state is LoginLoading ? null : () {
               context.read<LoginBloc>().add(LoginRequested(
                 usernameFieldController.text, passwordFieldController.text));
-            };
           },
           child: const Text("Login")
         );
