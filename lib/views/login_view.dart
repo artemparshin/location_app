@@ -60,9 +60,12 @@ class _LoginViewState extends State<LoginView> {
   Widget _loginButton(BuildContext context) {
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
-        state is LoginSuccess ? () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {return const CalendarTab();}));
-        } : null;
+        state is LoginSuccess
+        ? Navigator.of(context)
+          .push(MaterialPageRoute(builder: (BuildContext context) {
+            return const CalendarTab();
+          }))
+         : null;
       },
       builder: (context, state) {
         return ElevatedButton(

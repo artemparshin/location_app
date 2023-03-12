@@ -18,34 +18,24 @@ class _RegViewState extends State<RegView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<RegBloc, RegState>(
-      listener: (context, state) {
-        state is RegSuccess
-          ? () {
-            Navigator.of(context)
-              .push(MaterialPageRoute(builder: (BuildContext context) {
-                return const WelcomeScreen();
-              }
-            ));
-          }
-          : null;
-      },
-      child: Scaffold(
-          body: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
             _usernameField(),
             _passwordField(),
             _loginButton(context),
             BlocBuilder<RegBloc, RegState>(
               builder: (context, state) {
                 return (state is RegFailure
-                    ? const Text('Something went wrong')
-                    : const SizedBox.shrink());
+                  ? const Text('Something went wrong')
+                  : const SizedBox.shrink());
               },
             ),
-          ]))),
+          ]
+        )
+      )
     );
   }
 
@@ -65,7 +55,15 @@ class _RegViewState extends State<RegView> {
   }
 
   Widget _loginButton(BuildContext context) {
-    return BlocBuilder<RegBloc, RegState>(
+    return BlocConsumer<RegBloc, RegState>(
+      listener: (context, state) {
+        state is RegSuccess
+          ? Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+                return const WelcomeScreen();
+              }))
+          : null;
+      },
       builder: (context, state) {
         return ElevatedButton(
           onPressed: state is RegLoading
