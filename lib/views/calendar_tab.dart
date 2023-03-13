@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:location_app/model/event_model.dart';
 import 'package:location_app/service/database_service.dart';
+import 'package:location_app/views/welcome_screen.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'add_tab.dart';
 
@@ -14,32 +17,47 @@ class CalendarState extends State<CalendarTab> {
   
   @override
   void initState() {
-    MyDatabaseService().getLocationCollectionData().then((value) {eventList = ValueNotifier(value);});
+    MyDatabaseService().getLocationCollectionData().then((value) {eventList = value;});
     super.initState();
   }
   
-  static ValueNotifier<List<EventModel>> eventList = ValueNotifier(List.empty());
-  List<EventModel> eventListValue = eventList.value; 
+  static List<EventModel> eventList = List.empty();
+
+  static ValueNotifier<DateTime> _mySelectedDay = ValueNotifier(DateTime.now());
+
+  static DateTime _focusedDay = DateTime.now();
+
   int currentTabIndex = 0;
-  ValueNotifier<bool> notifier = ValueNotifier(false);
-  ValueNotifier<DateTime> mySelectedDay = ValueNotifier(DateTime.now());
 
   EventModel? getIndex(DateTime day) {
-    for (var event in eventListValue) {
+    for (var event in eventList) {
       if ((event.Date.day == day.day) &&
-          (event.Date.month == day.month) &&
-          (event.Date.year == day.year)) {
-        return event;
-      }
+        (event.Date.month == day.month) &&
+        (event.Date.year == day.year)) {
+          return event;
+        } 
     }
   }
-  
+
   List<String> getEventsForDay(DateTime day) {
-    if (eventListValue.any((element) => element.Date.day == day.day && element.Date.month == day.month && element.Date.year == day.year)) {
+    if (eventList.any((element) => element.Date.day == day.day && element.Date.month == day.month && element.Date.year == day.year)) {
       return [""];
     }
     return [];
   }
+
+  Widget _signOut(BuildContext context) {
+      return ElevatedButton(
+        onPressed: () {
+          FirebaseAuth.instance.signOut();
+          Navigator.of(context)
+          .push(MaterialPageRoute(builder: (BuildContext context) {
+            return const WelcomeScreen();
+          }));
+        },
+        child: const Text("Sign out")
+      );
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -47,30 +65,27 @@ class CalendarState extends State<CalendarTab> {
       appBar: AppBar(
           title: const Text("Calendar"), automaticallyImplyLeading: false),
       body: Column(children: [
+        _signOut(context),
         TableCalendar(
             onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
               setState(() {
-                mySelectedDay.value = selectedDay;
+                _mySelectedDay.value = selectedDay;
+                _focusedDay = focusedDay;
               });
             },
             selectedDayPredicate: (day) {
-              // bool predicate = false;
-              // if (mySelectedDay == day || mySelectedDay == DateTime.now()) {
-              //   predicate = true;
-              // }
-              // return predicate;
-              return isSameDay(mySelectedDay.value, day);
+              return isSameDay(_mySelectedDay.value, day);
             },
             firstDay: DateTime.utc(2010),
             lastDay: DateTime.utc(2030),
-            focusedDay: DateTime.now(),
+            focusedDay: _focusedDay,
             eventLoader: (day) {
               return getEventsForDay(day);
             }),
         ValueListenableBuilder(
-          valueListenable: mySelectedDay,
+          valueListenable: _mySelectedDay,
           builder: (BuildContext context, dynamic value, Widget? child) {
-            return (eventListValue.isNotEmpty && getIndex(value) != null) ? Expanded(child: Column(
+            return (eventList.isNotEmpty && getIndex(value) != null) ? Expanded(child: Column(
               children: [
                 Row(
                   children: [const Text("From "), Text(getIndex(value)!.From)],
@@ -85,14 +100,14 @@ class CalendarState extends State<CalendarTab> {
                   children: [const Text("Date "), Text(getIndex(value)!.Date.toString())],
                 )
               ],
-            )) : const SizedBox();
+            )) : const SizedBox.shrink();
           },
         ) 
       ]),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_month), label: "Calendar"),
+            icon: Icon(Icons.calendar_month), label: "Calendar"),
           BottomNavigationBarItem(icon: Icon(Icons.border_color), label: "Add")
         ],
         currentIndex: currentTabIndex,
@@ -100,11 +115,11 @@ class CalendarState extends State<CalendarTab> {
           setState(() {
             currentTabIndex = Value;
             Value == 1
-                ? Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return const AddTab();
-                  }))
-                : null;
+            ? Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+                return const AddTab();
+              }))
+            : null;
           });
         },
       ),
